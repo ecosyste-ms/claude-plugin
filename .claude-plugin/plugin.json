@@ -1,0 +1,12 @@
+{
+  "name": "ecosystems",
+  "description": "Skills for querying ecosyste.ms APIs. Look up package metadata, repository info, dependents, maintainers, versions and more across every open source ecosystem.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Andrew Nesbitt",
+    "email": "andrew@nesbitt.io"
+  },
+  "homepage": "https://github.com/ecosyste-ms/skills",
+  "repository": "https://github.com/ecosyste-ms/skills",
+  "license": "MIT"
+}
