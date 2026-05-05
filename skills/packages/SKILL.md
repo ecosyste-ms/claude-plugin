@@ -42,7 +42,7 @@ curl -s 'https://packages.ecosyste.ms/api/v1/registries/rubygems.org/packages/ra
 curl -s 'https://packages.ecosyste.ms/api/v1/registries/proxy.golang.org/packages/github.com%2Fstretchr%2Ftestify'
 ```
 
-Useful fields in the response: `latest_release_number`, `latest_release_published_at`, `first_release_published_at`, `versions_count`, `dependent_packages_count`, `dependent_repos_count`, `downloads`, `rankings`, `maintainers`, `repo_metadata`, `advisories`, `funding_links`, `status`.
+Useful fields in the response: `latest_release_number`, `latest_release_published_at`, `first_release_published_at`, `versions_count`, `dependent_packages_count`, `dependent_repos_count`, `docker_dependents_count`, `docker_downloads_count`, `downloads`, `rankings`, `maintainers`, `repo_metadata`, `advisories`, `funding_links`, `status`. The response also includes follow-up URLs: `dependent_packages_url`, `usage_url` (repos service), `docker_usage_url` (docker service).
 
 ## Versions
 
@@ -60,11 +60,13 @@ curl -s 'https://packages.ecosyste.ms/api/v1/registries/npmjs.org/packages/expre
 curl -s 'https://packages.ecosyste.ms/api/v1/registries/npmjs.org/packages/express/latest_version'
 ```
 
-## Dependents and related
+## Dependent packages
+
+Other packages on the same registry that declare this one as a dependency. Sortable by `downloads`, `dependent_repos_count`, `dependent_packages_count`, `latest_release_published_at` etc, so you can find the most significant downstream consumers first.
 
 ```bash
-# packages that depend on this one
-curl -s 'https://packages.ecosyste.ms/api/v1/registries/npmjs.org/packages/lodash/dependent_packages'
+# top dependents by download count
+curl -s 'https://packages.ecosyste.ms/api/v1/registries/npmjs.org/packages/lodash/dependent_packages?sort=downloads&order=desc&per_page=20'
 
 # breakdown of dependent kinds (runtime, dev, peer)
 curl -s 'https://packages.ecosyste.ms/api/v1/registries/npmjs.org/packages/lodash/dependent_package_kinds'
@@ -73,7 +75,19 @@ curl -s 'https://packages.ecosyste.ms/api/v1/registries/npmjs.org/packages/lodas
 curl -s 'https://packages.ecosyste.ms/api/v1/registries/npmjs.org/packages/lodash/related_packages'
 ```
 
-For repositories that depend on a package (rather than other packages), use the repos skill (`/usage/{ecosystem}/{package}`).
+## Usage footprint across the ecosystem
+
+The package response gives you counts (`dependent_packages_count`, `dependent_repos_count`, `docker_dependents_count`, `docker_downloads_count`). For the actual lists, follow up on the other services. The ecosystem name in these URLs is the package manager (`npm`, `pypi`, `cargo`, `bundler`, `go`, `maven`), not the registry hostname.
+
+```bash
+# repositories that depend on it (repos service)
+curl -s 'https://repos.ecosyste.ms/api/v1/usage/npm/lodash/dependent_repositories?sort=stargazers_count&order=desc'
+
+# docker images that ship it (docker service)
+curl -s 'https://docker.ecosyste.ms/api/v1/usage/npm/lodash'
+```
+
+Together these three views (dependent packages, dependent repos, docker images) give a rounded picture of a package's blast radius.
 
 ## Maintainers and namespaces
 
@@ -99,6 +113,7 @@ List endpoints accept `?page=N&per_page=N` (max 1000). Sortable endpoints accept
 
 - The user asks about a package on any registry
 - Checking adoption, release cadence, or maintainer count for a library
-- Finding what depends on a package
+- Finding what depends on a package and how widely it's deployed (registry, repos, docker)
+- Estimating the blast radius of a vulnerability or breaking change
 - Listing every package an org or maintainer publishes
 - Resolving a purl to its registry metadata
