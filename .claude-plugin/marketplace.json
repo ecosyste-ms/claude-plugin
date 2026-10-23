@@ -18,8 +18,8 @@
         "email": "andrew@nesbitt.io"
       },
       "license": "MIT",
-      "repository": "https://github.com/ecosyste-ms/skills",
-      "homepage": "https://github.com/ecosyste-ms/skills",
+      "repository": "https://github.com/ecosyste-ms/claude-plugin",
+      "homepage": "https://github.com/ecosyste-ms/claude-plugin",
       "category": "data",
       "keywords": ["packages", "repositories", "open-source", "metadata", "dependencies", "ecosystems", "purl", "registries"]
     }

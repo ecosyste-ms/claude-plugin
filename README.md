@@ -7,7 +7,7 @@ A [Claude Code plugin](https://code.claude.com/docs/en/plugins) providing skills
 Add the marketplace and install the plugin:
 
 ```
-/plugin marketplace add ecosyste-ms/skills
+/plugin marketplace add ecosyste-ms/claude-plugin
 /plugin install ecosystems@ecosystems
 ```
 
